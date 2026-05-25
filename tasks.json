@@ -1,12 +1,27 @@
 [
   {
     "id": 1,
-    "title": "hello",
-    "done": false
+    "title": "hello world",
+    "done": true
   },
   {
     "id": 2,
     "title": "buy wooden spoon",
+    "done": true
+  },
+  {
+    "id": 3,
+    "title": "test task",
+    "done": true
+  },
+  {
+    "id": 4,
+    "title": "get bike",
     "done": false
+  },
+  {
+    "id": 5,
+    "title": "cli verification task",
+    "done": true
   }
 ]
