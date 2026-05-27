@@ -18,10 +18,5 @@
     "id": 4,
     "title": "get bike",
     "done": false
-  },
-  {
-    "id": 5,
-    "title": "cli verification task",
-    "done": true
   }
 ]

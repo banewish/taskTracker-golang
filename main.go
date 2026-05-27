@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"os"
 	"strconv"
 	"strings"
@@ -123,6 +124,7 @@ func main() {
 		printUsage()
 		os.Exit(1)
 	}
+
 }
 
 func parseIDArg(args []string) (int, bool) {
