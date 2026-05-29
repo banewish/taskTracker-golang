@@ -47,6 +47,9 @@ func main() {
 	case "list":
 		listTasks(tasks)
 
+	case "list-done":
+		listTaskDone(tasks, true)
+
 	case "done":
 		id, ok := parseIDArg(os.Args)
 		if !ok {
@@ -147,6 +150,7 @@ func printUsage() {
 	fmt.Println("Usage:")
 	fmt.Println("  go run . add <title>")
 	fmt.Println("  go run . list")
+	fmt.Println("  go run . listDone")
 	fmt.Println("  go run . done <id>")
 	fmt.Println("  go run . delete <id>")
 	fmt.Println("  go run . rename <id> <new title>")

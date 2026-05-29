@@ -54,3 +54,11 @@ func renameTask(tasks []Task, id int, newTitle string) ([]Task, bool) {
 	}
 	return tasks, false
 }
+
+func listTaskDone(tasks []Task, done bool) {
+	for _, task := range tasks {
+		if task.Done == done {
+			fmt.Println(task.ID, task.Title, task.Done)
+		}
+	}
+}

@@ -5,18 +5,21 @@ import (
 )
 
 func TestAddTask(t *testing.T) {
-	tasks := []struct{
-		ID int
-		Title string
-		Done bool
-	}{
+	tasks := []Task{
 		{
-			ID: 		1, 
-			Title: 		"existing task", 
-			Done: 		false,
-		}}
+			ID:    1,
+			Title: "existing task",
+			Done:  false,
+		},
+	}
 
-	if updated := addTask(tasks, "new task")
+	updated := addTask(tasks, "new task")
+	if updated == nil {
+		t.Fatalf("expected updated tasks, got nil")
+	}
+	if len(updated) != 2 {
+		t.Fatalf("Expected 2 tasks, got %d", len(updated))
+	}
 }
 
 func TestRenameTask(t *testing.T) {
