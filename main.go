@@ -48,7 +48,13 @@ func main() {
 		listTasks(tasks)
 
 	case "list-done":
-		listTaskDone(tasks, true)
+		listTasksByStatus(tasks, StatusDone)
+
+	case "list-not-done":
+		listNotDone(tasks)
+
+	case "list-in-progress":
+		listTasksByStatus(tasks, StatusInProgress)
 
 	case "done":
 		id, ok := parseIDArg(os.Args)
@@ -69,6 +75,46 @@ func main() {
 		}
 
 		fmt.Println("Task marked done.")
+
+	case "in-progress":
+		id, ok := parseIDArg(os.Args)
+		if !ok {
+			os.Exit(1)
+		}
+
+		var found bool
+		tasks, found = markTaskInProgress(tasks, id)
+		if !found {
+			fmt.Printf("Task with ID %d was not found.\n", id)
+			os.Exit(1)
+		}
+
+		if err := saveTasks(tasks); err != nil {
+			fmt.Println("Failed to save tasks:", err)
+			os.Exit(1)
+		}
+
+		fmt.Println("Task marked in progress.")
+
+	case "not-done":
+		id, ok := parseIDArg(os.Args)
+		if !ok {
+			os.Exit(1)
+		}
+
+		var found bool
+		tasks, found = markTaskNotDone(tasks, id)
+		if !found {
+			fmt.Printf("Task with ID %d was not found.\n", id)
+			os.Exit(1)
+		}
+
+		if err := saveTasks(tasks); err != nil {
+			fmt.Println("Failed to save tasks:", err)
+			os.Exit(1)
+		}
+
+		fmt.Println("Task marked not done.")
 
 	case "delete":
 		id, ok := parseIDArg(os.Args)
@@ -150,9 +196,12 @@ func printUsage() {
 	fmt.Println("Usage:")
 	fmt.Println("  go run . add <title>")
 	fmt.Println("  go run . list")
-	fmt.Println("  go run . listDone")
+	fmt.Println("  go run . list-done")
+	fmt.Println("  go run . list-not-done")
+	fmt.Println("  go run . list-in-progress")
 	fmt.Println("  go run . done <id>")
+	fmt.Println("  go run . in-progress <id>")
+	fmt.Println("  go run . not-done <id>")
 	fmt.Println("  go run . delete <id>")
 	fmt.Println("  go run . rename <id> <new title>")
-
 }

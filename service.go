@@ -11,9 +11,9 @@ func renumberTaskIDs(tasks []Task) []Task {
 
 func addTask(tasks []Task, title string) []Task {
 	newTask := Task{
-		ID:    len(tasks) + 1,
-		Title: title,
-		Done:  false,
+		ID:     len(tasks) + 1,
+		Title:  title,
+		Status: StatusNotDone,
 	}
 	tasks = append(tasks, newTask)
 	return renumberTaskIDs(tasks)
@@ -21,14 +21,34 @@ func addTask(tasks []Task, title string) []Task {
 
 func listTasks(tasks []Task) {
 	for _, task := range tasks {
-		fmt.Println(task.ID, task.Title, task.Done)
+		fmt.Println(task.ID, task.Title, task.Status)
 	}
 }
 
 func markTaskDone(tasks []Task, id int) ([]Task, bool) {
 	for i, task := range tasks {
 		if task.ID == id {
-			tasks[i].Done = true
+			tasks[i].Status = StatusDone
+			return tasks, true
+		}
+	}
+	return tasks, false
+}
+
+func markTaskInProgress(tasks []Task, id int) ([]Task, bool) {
+	for i, task := range tasks {
+		if task.ID == id {
+			tasks[i].Status = StatusInProgress
+			return tasks, true
+		}
+	}
+	return tasks, false
+}
+
+func markTaskNotDone(tasks []Task, id int) ([]Task, bool) {
+	for i, task := range tasks {
+		if task.ID == id {
+			tasks[i].Status = StatusNotDone
 			return tasks, true
 		}
 	}
@@ -55,10 +75,14 @@ func renameTask(tasks []Task, id int, newTitle string) ([]Task, bool) {
 	return tasks, false
 }
 
-func listTaskDone(tasks []Task, done bool) {
+func listTasksByStatus(tasks []Task, status TaskStatus) {
 	for _, task := range tasks {
-		if task.Done == done {
-			fmt.Println(task.ID, task.Title, task.Done)
+		if task.Status == status {
+			fmt.Println(task.ID, task.Title, task.Status)
 		}
 	}
+}
+
+func listNotDone(tasks []Task) {
+	listTasksByStatus(tasks, StatusNotDone)
 }

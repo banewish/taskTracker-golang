@@ -7,9 +7,9 @@ import (
 func TestAddTask(t *testing.T) {
 	tasks := []Task{
 		{
-			ID:    1,
-			Title: "existing task",
-			Done:  false,
+			ID:     1,
+			Title:  "existing task",
+			Status: StatusNotDone,
 		},
 	}
 
@@ -33,7 +33,7 @@ func TestRenameTask(t *testing.T) {
 	}{
 		{
 			name:      "renames existing task",
-			tasks:     []Task{{ID: 1, Title: "old title", Done: false}},
+			tasks:     []Task{{ID: 1, Title: "old title", Status: StatusNotDone}},
 			id:        1,
 			newTitle:  "new title",
 			wantFound: true,
@@ -41,7 +41,7 @@ func TestRenameTask(t *testing.T) {
 		},
 		{
 			name:      "returns false when task does not exist",
-			tasks:     []Task{{ID: 1, Title: "old title", Done: false}},
+			tasks:     []Task{{ID: 1, Title: "old title", Status: StatusNotDone}},
 			id:        2,
 			newTitle:  "new title",
 			wantFound: false,
