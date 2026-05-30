@@ -22,6 +22,42 @@ func TestAddTask(t *testing.T) {
 	}
 }
 
+func TestListTasks(t *testing.T) {
+	tasks := []Task{
+		{
+			ID:     1,
+			Title:  "task 1",
+			Status: StatusNotDone,
+		},
+		{
+			ID:     2,
+			Title:  "task 2",
+			Status: StatusInProgress,
+		},
+	}
+
+	// call the function to ensure it doesn't panic
+	listTasks(tasks)
+}
+
+func TestDeleteTask(t *testing.T) {
+	tasks := []Task{
+		{
+			ID:     1,
+			Title:  "task 1",
+			Status: StatusNotDone,
+		},
+		{
+			ID:     2,
+			Title:  "task 2",
+			Status: StatusInProgress,
+		},
+	}
+
+	// call the function to ensure it doesn't panic
+	deleteTask(tasks, 1)
+}
+
 func TestRenameTask(t *testing.T) {
 	tests := []struct {
 		name      string
