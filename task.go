@@ -1,6 +1,10 @@
 package main
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
 
 type TaskStatus string
 
@@ -11,17 +15,21 @@ const (
 )
 
 type Task struct {
-	ID     int        `json:"id"`
-	Title  string     `json:"title"`
-	Status TaskStatus `json:"status"`
+	ID        int        `json:"id"`
+	Title     string     `json:"title"`
+	Status    TaskStatus `json:"status"`
+	CreatedAt time.Time  `json:"createdAt,omitempty"`
+	UpdatedAt time.Time  `json:"updatedAt,omitempty"`
 }
 
 func (task *Task) UnmarshalJSON(data []byte) error {
 	type rawTask struct {
-		ID     int         `json:"id"`
-		Title  string      `json:"title"`
-		Status TaskStatus  `json:"status"`
-		Done   interface{} `json:"done"`
+		ID        int         `json:"id"`
+		Title     string      `json:"title"`
+		Status    *TaskStatus `json:"status"`
+		Done      *bool       `json:"done"`
+		CreatedAt *time.Time  `json:"createdAt"`
+		UpdatedAt *time.Time  `json:"updatedAt"`
 	}
 
 	var raw rawTask
@@ -31,15 +39,25 @@ func (task *Task) UnmarshalJSON(data []byte) error {
 
 	task.ID = raw.ID
 	task.Title = raw.Title
-
-	switch raw.Status {
-	case StatusNotDone, StatusInProgress, StatusDone:
-		task.Status = raw.Status
-		return nil
+	if raw.CreatedAt != nil {
+		task.CreatedAt = *raw.CreatedAt
+	}
+	if raw.UpdatedAt != nil {
+		task.UpdatedAt = *raw.UpdatedAt
 	}
 
-	if done, ok := raw.Done.(bool); ok {
-		if done {
+	if raw.Status != nil {
+		switch *raw.Status {
+		case StatusNotDone, StatusInProgress, StatusDone:
+			task.Status = *raw.Status
+			return nil
+		default:
+			return fmt.Errorf("invalid task status %q", *raw.Status)
+		}
+	}
+
+	if raw.Done != nil {
+		if *raw.Done {
 			task.Status = StatusDone
 		} else {
 			task.Status = StatusNotDone
@@ -47,6 +65,5 @@ func (task *Task) UnmarshalJSON(data []byte) error {
 		return nil
 	}
 
-	task.Status = StatusNotDone
-	return nil
+	return fmt.Errorf("missing task status")
 }
